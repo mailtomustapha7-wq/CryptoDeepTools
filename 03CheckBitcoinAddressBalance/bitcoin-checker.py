@@ -4,7 +4,7 @@ from time import sleep
 
 try:    # if is python3
     from urllib.request import urlopen
-except: # if is python2
+except ImportError: # if is python2
     from urllib2 import urlopen
 
 
@@ -39,9 +39,9 @@ def check_balance(address):
             htmlfile = urlopen("https://blockchain.info/address/%s?format=json" % check_address, timeout = 10)
             htmltext = htmlfile.read().decode('utf-8')
             reading_state  = 0
-        except:
+        except (IOError, OSError, ValueError) as e:
             reading_state+=1
-            print( "Checking... " + str(reading_state) )
+            print( "Checking... " + str(reading_state) + " (" + str(e) + ")" )
             sleep(60*reading_state)
 
     print( "\nBitcoin Address = " + check_address )
@@ -52,8 +52,8 @@ def check_balance(address):
         for tag in blockchain_tags_json:
             blockchain_info_array.append (
                 float( re.search( r'%s":(\d+),' % tag, htmltext ).group(1) ) )
-    except:
-        print( "Error '%s'." % tag );
+    except (AttributeError, ValueError) as e:
+        print( "Error parsing '%s': %s" % (tag, e) );
         exit(1)
 
     for i, btc_tokens in enumerate(blockchain_info_array):
