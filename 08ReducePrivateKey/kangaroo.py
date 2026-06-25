@@ -60,7 +60,7 @@ import random
 try:
 	# https://www.lfd.uci.edu/~gohlke/pythonlibs/
 	import gmpy2
-except:
+except ImportError:
 	flag_gmpy2 = False
 	print("[warn] lib gmpy2 not found. full speed is not achievable!")
 else:
@@ -71,7 +71,7 @@ else:
 try:
 	from coincurve import PrivateKey, PublicKey
 	from coincurve.utils import int_to_bytes, hex_to_bytes, bytes_to_int, bytes_to_hex, int_to_bytes_padded
-except:
+except ImportError:
 	flag_coincurve = False
 	if (not flag_gmpy2):
 		print("[warn] lib coincurve not found. full speed is not achievable!")
@@ -82,7 +82,7 @@ else:
 try:
 	from cffi import FFI
 	ffi = FFI()
-except:
+except ImportError:
 	flag_cffi = False
 	if (not flag_gmpy2) and flag_coincurve:
 		print("[warn] lib cffi not found. full speed is not achievable!")
@@ -730,7 +730,7 @@ if __name__ == '__main__':
 			pow2bits = int(sys.argv[1])
 			L = 2**(pow2bits-1)
 			U = 2**pow2bits
-		except:
+		except (ValueError, TypeError):
 			flag_pow2bits = False
 		else:
 			flag_pow2bits = True
@@ -742,7 +742,7 @@ if __name__ == '__main__':
 			assert(len(sys.argv)>2)
 			bitMin = 8
 			bitMax = 256
-		except:
+		except (ValueError, AssertionError):
 			flag_keyspace = False
 		else:
 			flag_keyspace = True
@@ -759,7 +759,7 @@ if __name__ == '__main__':
 			Wsqrt = W**0.5
 			#Wsqrt = math.sqrt(W)
 			Wsqrt = int(Wsqrt)
-		except:
+		except (ValueError, OverflowError):
 			usage()
 
 		# M == (L+U)/2 == L+(W/2)
@@ -791,7 +791,7 @@ if __name__ == '__main__':
 			Wsqrt = W**0.5
 			#Wsqrt = math.sqrt(W)
 			Wsqrt = int(Wsqrt)
-		except:
+		except (ValueError, OverflowError):
 			usage()
 
 		# M == (L+U)/2 == L+(W/2)

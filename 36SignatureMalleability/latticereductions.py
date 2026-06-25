@@ -23,7 +23,11 @@ def load_csv(filename, limit=None):
     msgs = []
     sigs = []
     pubs = []
-    fp = open(filename)
+    try:
+        fp = open(filename)
+    except IOError as e:
+        sys.stderr.write("Error opening file '%s': %s\n" % (filename, e))
+        sys.exit(1)
     n = 0
     if limit is None:
         limit = -1
@@ -81,8 +85,8 @@ def privkeys_from_reduced_matrix(msgs, sigs, pubs, matrix):
             key = potential_priv_key % order
             if key not in keys:
                 keys.append(key)
-        except Exception as e:
-            sys.stderr.write(str(e) + "\n")
+        except (ZeroDivisionError, ValueError) as e:
+            sys.stderr.write("Key derivation failed for row: %s\n" % str(e))
     return keys
 
 
@@ -94,6 +98,9 @@ def display_keys(keys):
 
 
 def main():
+    if len(sys.argv) < 4:
+        sys.stderr.write("Usage: %s <csv_file> <bits> <limit>\n" % sys.argv[0])
+        sys.exit(1)
     filename = sys.argv[1]
     B = int(sys.argv[2])
     limit = int(sys.argv[3])

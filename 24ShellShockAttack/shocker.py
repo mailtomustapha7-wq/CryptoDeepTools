@@ -277,7 +277,7 @@ def ask_for_console(proxy, successful_targets, verbose):
         sys.stdout.flush()
         try:
             user_input = int(user_input)
-        except:
+        except ValueError:
             continue
         if user_input not in range(len(successful_targets)+1):
             print "[-] Please enter a number between 1 and %i (0 to exit)" % \

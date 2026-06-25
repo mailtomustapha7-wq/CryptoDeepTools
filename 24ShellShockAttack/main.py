@@ -50,8 +50,8 @@ def cgiBul():
         else:
             print(Colors.r, "Not Vuln..!!!")
 
-    except:
-        print(Colors.r, "Invalid URL Try AGAIN..!")
+    except (requests.exceptions.RequestException, ValueError) as e:
+        print(Colors.r, "Invalid URL Try AGAIN..! (" + str(e) + ")")
         sleep(3)
         cgiBul()
     sleep(2)
@@ -100,15 +100,14 @@ def dizinScan():
 
                         else:
                             print(Colors.b, "Scanning for\t:" + url)
-                    except:
-                        pass
+                    except (requests.exceptions.RequestException, IOError) as e:
+                        print(Colors.r, "Request failed for " + url + ": " + str(e))
             break
 
 
-    except:
-        print("CHECK YOUR TARGET..!")
+    except (IOError, OSError, KeyError, requests.exceptions.RequestException) as e:
+        print("CHECK YOUR TARGET: " + str(e))
         sleep(3)
-        pass
     print("\n{} vulnerable url(s) found.Please check vulnurl.txt".format(counter))
     sleep(2)
 
