@@ -60,7 +60,11 @@ class TestWalletMixin:
     @classmethod
     def create_db_if_needed(cls, db):
         if cls.SCHEMA == 'postgresql':
-            con = psycopg2.connect(user='postgres', host='localhost', password='postgres')
+            con = psycopg2.connect(
+                user=os.environ.get('POSTGRES_USER', 'postgres'),
+                host=os.environ.get('POSTGRES_HOST', 'localhost'),
+                password=os.environ.get('POSTGRES_PASSWORD', ''),
+            )
             con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             cur = con.cursor()
             try:
@@ -90,7 +94,12 @@ class TestWalletMixin:
         elif cls.SCHEMA == 'postgresql':
             for db in [DATABASE_NAME, DATABASE_NAME_2]:
                 cls.create_db_if_needed(db)
-                con = psycopg2.connect(user='postgres', host='localhost', password='postgres', database=db)
+                con = psycopg2.connect(
+                    user=os.environ.get('POSTGRES_USER', 'postgres'),
+                    host=os.environ.get('POSTGRES_HOST', 'localhost'),
+                    password=os.environ.get('POSTGRES_PASSWORD', ''),
+                    database=db,
+                )
                 con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
                 cur = con.cursor()
                 try:

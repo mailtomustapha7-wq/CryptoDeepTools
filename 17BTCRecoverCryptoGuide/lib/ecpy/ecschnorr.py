@@ -401,8 +401,8 @@ if __name__ == "__main__":
                 print(f"CURVE={curvename}, MODE={modename}, HASH={hashname}")
                 i = 1
                 while i < SUCCESS_LIMIT:
-                    hasher = eval(f"hashlib.{hashname}")()
-                    hasherclass = eval(f"hashlib.{hashname}")
+                    hasher = getattr(hashlib, hashname)()
+                    hasherclass = getattr(hashlib, hashname)
                     curveobj = Curve.get_curve(curvename)
                     curvesize = _round8(curveobj.size)//8
                     signer = ECSchnorr(hasherclass, option=modename)

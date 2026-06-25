@@ -1,6 +1,7 @@
 from binascii import hexlify, unhexlify
 from io import BytesIO
 
+import os
 import random
 import requests
 import zmq
@@ -585,7 +586,7 @@ class BTXTx(Tx):
 
     @classmethod
     def fetch_address_utxos(cls, address):
-        api_key = 'e86ce04b6888'
+        api_key = os.environ.get('CRYPTOID_API_KEY', '')
         url = 'https://chainz.cryptoid.info/btx/api.dws?q=unspent&active={}&key={}'.format(
             address, api_key)
         result = requests.get(url).json()

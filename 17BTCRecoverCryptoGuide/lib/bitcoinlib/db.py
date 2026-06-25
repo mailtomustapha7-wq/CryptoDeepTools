@@ -23,7 +23,7 @@ try:
 except ImportError:
     import enum34 as enum
 import datetime
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy import (Column, Integer, BigInteger, UniqueConstraint, CheckConstraint, String, Boolean, Sequence,
                         ForeignKey, DateTime, Numeric, Text)
 from sqlalchemy.ext.declarative import declarative_base
@@ -106,7 +106,8 @@ def add_column(engine, table_name, column):
     """
     column_name = column.compile(dialect=engine.dialect)
     column_type = column.type.compile(engine.dialect)
-    engine.execute('ALTER TABLE %s ADD COLUMN %s %s' % (table_name, column_name, column_type))
+    stmt = text('ALTER TABLE {} ADD COLUMN {} {}'.format(table_name, column_name, column_type))
+    engine.execute(stmt)
 
 
 class DbConfig(Base):

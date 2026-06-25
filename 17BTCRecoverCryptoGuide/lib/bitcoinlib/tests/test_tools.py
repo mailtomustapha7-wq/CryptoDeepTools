@@ -33,7 +33,11 @@ def init_sqlite(_):
 
 
 def init_postgresql(_):
-    con = psycopg2.connect(user='postgres', host='localhost', password='postgres')
+    con = psycopg2.connect(
+        user=os.environ.get('POSTGRES_USER', 'postgres'),
+        host=os.environ.get('POSTGRES_HOST', 'localhost'),
+        password=os.environ.get('POSTGRES_PASSWORD', ''),
+    )
     con.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     cur = con.cursor()
     cur.execute(sql.SQL("DROP DATABASE IF EXISTS {}").format(

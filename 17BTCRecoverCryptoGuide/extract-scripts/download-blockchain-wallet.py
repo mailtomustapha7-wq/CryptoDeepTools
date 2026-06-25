@@ -19,17 +19,14 @@
 # along with this program.  If not, see http://www.gnu.org/licenses/
 
 
-import sys, os.path, atexit, uuid, urllib.request, urllib.error, urllib.parse, json, time, ssl
+import sys, os, os.path, atexit, uuid, urllib.request, urllib.error, urllib.parse, json, time, ssl
 
-# Context to ignore SSL Errors
 ctx = ssl.create_default_context()
-ctx.check_hostname = False
-ctx.verify_mode = ssl.CERT_NONE
 
 # The base URL
 BASE_URL = "https://login.blockchain.com/"
-# The api_code (as of Feb 2 2017)
-API_CODE = "1770d5d9-bcea-4d28-ad21-6cbd5be018a8"
+# The api_code should be provided via environment variable
+API_CODE = os.environ.get('BLOCKCHAIN_API_CODE', '')
 
 prog = os.path.basename(sys.argv[0])
 

@@ -29,7 +29,7 @@ print("self.prefix_hdkey_private: %s" % network.wif_prefix())
 print("\n=== Network parameters ===")
 for k in network.__dir__():
     if k[:1] != '_':
-        v = eval('network.%s' % k)
+        v = getattr(network, k)
         if not callable(v):
             print("%25s: %s" % (k, v))
 
