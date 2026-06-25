@@ -1,10 +1,9 @@
-# https://github.com/demining/CryptoDeepTools.git
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
-import hashlib
+from shared_utils.file_utils import binary_save
 
 Binary = "1111000101000001111101110000011101000000101110101101011110100100000101010001100101100101001010001110001111100000110111110110000011011011010111101111111010001000001111000110010101000111011101000101000011000100011011001000100111110001110010011001001100111000"
 
-f = open("walletpassphrase.txt", 'w')
-f.write("walletpassphrase " + Binary + " 60" + "\n")
-f.write("" + "\n")
-f.close()
+binary_save(Binary)

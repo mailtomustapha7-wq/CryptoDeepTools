@@ -1,32 +1,12 @@
 import sys
-import bitcoin
-from Crypto.Hash import SHA256
-import txnUtils
-import keyUtils
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
-# tx = ""
+from shared_utils.signature import extract_ecdsa_params
+
 tx = "" + sys.argv[1]
+sigR, sigS, sigZ, pub = extract_ecdsa_params(tx)
 
-# Parse the transaction
-m = txnUtils.parseTxn(tx)
-e = txnUtils.getSignableTxn(m)
-
-# Calculate the double SHA-256 hash
-hash1 = SHA256.new(e).digest()
-hash2 = SHA256.new(hash1).digest()
-
-# Convert to hex and reverse for signature processing
-z1 = hash2[::-1].hex()
-z = hash2.hex()
-
-# Get the signature and public key
-s = keyUtils.derSigToHexSig(m[1][:-2])
-pub = m[2]
-sigR = s[:64]
-sigS = s[-64:]
-sigZ = z
-
-# Print results
 print("R = 0x" + sigR)
 print("S = 0x" + sigS)
 print("Z = 0x" + sigZ)

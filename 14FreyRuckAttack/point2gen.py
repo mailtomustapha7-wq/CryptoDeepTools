@@ -1,13 +1,10 @@
 import sys
-from ecpy.curves     import Curve,Point
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
-cv = Curve.get_curve('secp256k1')
-P  = Point(0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798,
-           0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8,
-           cv)
+from shared_utils.point_generator import generate_point
 
-k   = int(sys.argv[1],16)
-
-Q  = k*P
-
+k = sys.argv[1]
+Q = generate_point(k)
 print(Q)
+
